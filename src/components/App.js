@@ -14,8 +14,8 @@ class App extends React.Component {
         hasError: false
     }
     componentWillMount = () => {
-        if (window.location.protocol !== "http")
-            window.location.protocol = "http"
+        window.location.protocol === 'https:' && (window.location.href = window.location.href.replace(/^https:/, 'http:'));
+
     }
     handleData = (data) => {
         let result = JSON.parse(data);
