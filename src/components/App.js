@@ -11,11 +11,12 @@ class App extends React.Component {
         isLoading: true,
         stockResults: null,
         selectedItem: null,
+        hasError: false
     }
     handleData = (data) => {
         let result = JSON.parse(data);
         if (result && result.length > 0) {
-            // this.setState({ isLoading: false, stockResults: result })
+            this.setState({ isLoading: false, stockResults: result })
         }
     }
     onStockItemSelect = (item) => {
@@ -29,17 +30,17 @@ class App extends React.Component {
     }
     render() {
         return <React.Fragment>
-            {/* <FetchStocks handleData={this.handleData}
+            <FetchStocks handleData={this.handleData}                       //fetching real time stocks
                 closeConnection={this.closeConnection} />
-
-            <div className="container-fluid">
-                <div className="row">
-                    <DisplayStock stockResults={this.state.stockResults} onStockItemSelect={this.onStockItemSelect}
-                        selectedItem={this.state.selectedItem} updateStockDetail={this.updateStockDetail} />
-                    <DisplayGraph selectedItem={this.state.selectedItem} stockDetails={stockDetails} />
-                </div>
-            </div> */}
-            <LoadingView />
+            {!this.state.isLoading &&
+                <div className="container-fluid">
+                    <div className="row">
+                        <DisplayStock stockResults={this.state.stockResults} onStockItemSelect={this.onStockItemSelect}
+                            selectedItem={this.state.selectedItem} updateStockDetail={this.updateStockDetail} />
+                        <DisplayGraph selectedItem={this.state.selectedItem} stockDetails={stockDetails} />
+                    </div>
+                </div>}
+            {this.state.isLoading && <LoadingView />}
         </React.Fragment>
     }
 }

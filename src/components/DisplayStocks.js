@@ -4,12 +4,13 @@ import TimeAgo from 'react-timeago';
 
 let stocks = {};
 class DisplayStock extends React.Component {
+
     renderRows() {
         let newStock = stocks;
         this.props.stockResults.map((item) => {
             let da = stocks[item[0]];
-            if (newStock && newStock[item[0]]) {
-                newStock[item[0]].textClass = da.value < item[1] ? "text-success" : "text-danger";
+            if (newStock && newStock[item[0]]) {            // already stock present else add
+                newStock[item[0]].textClass = da.value < item[1] ? "text-success" : "text-danger";     // this condition takes care of comparison betn previous & current
                 newStock[item[0]].previousData.push({ time: Date.now(), value: item[1] })
                 newStock[item[0]].value = item[1];
             }
@@ -22,7 +23,7 @@ class DisplayStock extends React.Component {
         if (stocks != null) {
             var tableData = Object.keys(stocks).map((item) => {
                 let data = stocks[item];
-                let selectedClassName = item === this.props.selectedItem ? "bg-primary" : '';
+                let selectedClassName = item === this.props.selectedItem ? "selected-row" : '';
                 return <tr onClick={() => this.props.onStockItemSelect(item)} className={selectedClassName}>
                     <td>{item}</td>
                     <td className={data.textClass}>{Number(data.value).toFixed(2)}</td>
@@ -55,7 +56,7 @@ class DisplayStock extends React.Component {
                             <th scope="col">History</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="tablebody-pointer">
                         {stocktableDetails}
                     </tbody>
                 </table>
