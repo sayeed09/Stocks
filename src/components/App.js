@@ -13,6 +13,10 @@ class App extends React.Component {
         selectedItem: null,
         hasError: false
     }
+    componentWillMount = () => {
+        if (window.location.protocol !== "http")
+            window.location.protocol = "http"
+    }
     handleData = (data) => {
         let result = JSON.parse(data);
         if (result && result.length > 0) {
