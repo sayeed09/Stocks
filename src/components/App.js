@@ -27,6 +27,7 @@ class App extends React.Component {
     }
     closeConnection = (err) => {
         this.setState({ hasError: true })
+        console.log(err);
     }
     render() {
         return <React.Fragment>

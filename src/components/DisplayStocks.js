@@ -46,7 +46,7 @@ class DisplayStock extends React.Component {
         return (
             <div className="col-sm-4 bg-light">
 
-                <h4 class="bg-dark px-2 text-white pb-2 mt-2">Live Stock App</h4>
+                <h4 className="bg-dark px-2 text-white pb-2 mt-2">Live Stock App</h4>
                 <table className="table table-hover bg-white">
                     <thead>
                         <tr>
