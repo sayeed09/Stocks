@@ -3,11 +3,18 @@ import Websocket from 'react-websocket';
 
 const url = "ws://stocks.mnet.website/";
 
-const FetchStocks = (props) => {
-    return <Websocket url={url}
-        onMessage={(e) => props.handleData(e)}
-        onClose={(e) => props.closeConnection(e)} />
+class FetchStocks extends React.Component {
+
+    componentDidCatch = () => {                                       // for catching unsafe scripts warning
+        this.props.handleScriptWarning();
+    }
+    render() {
+        return <Websocket url={url}
+            onMessage={(e) => this.props.handleData(e)}
+            onClose={(e) => this.props.closeConnection(e)} />
+    }
 }
+
 export default FetchStocks;
 
 

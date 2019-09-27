@@ -12,7 +12,9 @@ class App extends React.Component {
         isLoading: true,
         stockResults: null,
         selectedItem: null,
-        hasError: false
+        hasError: false,
+        count: 0,
+        isUnsafe: false
     }
     handleData = (data) => {
         let result = JSON.parse(data);
@@ -28,12 +30,16 @@ class App extends React.Component {
     }
     closeConnection = (err) => {
         this.setState({ hasError: true })
-        console.log(err);
+    }
+    handleScriptWarning = () => {                                    //unsafe script warnings are catched here
+        this.setState({ isUnsafe: true })
     }
     render() {
         return <React.Fragment>
-            <FetchStocks handleData={this.handleData}                       //fetching real time stocks
-                closeConnection={this.closeConnection} />
+            {!this.state.isUnsafe &&                      // managing unsafe script 
+                <FetchStocks handleData={this.handleData}
+                    closeConnection={this.closeConnection} handleScriptWarning={this.handleScriptWarning} />
+            }
 
             {!this.state.isLoading && !this.state.hasError &&
                 <div className="container-fluid">
@@ -42,10 +48,11 @@ class App extends React.Component {
                             selectedItem={this.state.selectedItem} updateStockDetail={this.updateStockDetail} />
                         <DisplayGraph selectedItem={this.state.selectedItem} stockDetails={stockDetails} />
                     </div>
-                </div>}
-            {this.state.isLoading && !this.state.hasError && <LoadingView />}
+                </div>
+            }
+            {this.state.isLoading && !this.state.hasError && !this.state.isUnsafe && <LoadingView />}
 
-            {this.state.hasError && <DisplayError />}
+            {(this.state.hasError || this.state.isUnsafe) && <DisplayError hasError={this.state.hasError} />}
         </React.Fragment>
     }
 }
