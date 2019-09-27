@@ -3,6 +3,7 @@ import FetchStocks from './FetchStocks';
 import DisplayStock from './DisplayStocks';
 import DisplayGraph from './DisplayGraph';
 import LoadingView from './LoadingView';
+import DisplayError from './DisplayError';
 
 
 let stockDetails = {};
@@ -12,10 +13,6 @@ class App extends React.Component {
         stockResults: null,
         selectedItem: null,
         hasError: false
-    }
-    componentWillMount = () => {
-        window.location.protocol === 'https:' && (window.location.href = window.location.href.replace(/^https:/, 'http:'));
-
     }
     handleData = (data) => {
         let result = JSON.parse(data);
@@ -37,7 +34,8 @@ class App extends React.Component {
         return <React.Fragment>
             <FetchStocks handleData={this.handleData}                       //fetching real time stocks
                 closeConnection={this.closeConnection} />
-            {!this.state.isLoading &&
+
+            {!this.state.isLoading && !this.state.hasError &&
                 <div className="container-fluid">
                     <div className="row">
                         <DisplayStock stockResults={this.state.stockResults} onStockItemSelect={this.onStockItemSelect}
@@ -45,7 +43,9 @@ class App extends React.Component {
                         <DisplayGraph selectedItem={this.state.selectedItem} stockDetails={stockDetails} />
                     </div>
                 </div>}
-            {this.state.isLoading && <LoadingView />}
+            {this.state.isLoading && !this.state.hasError && <LoadingView />}
+
+            {this.state.hasError && <DisplayError />}
         </React.Fragment>
     }
 }
